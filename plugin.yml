@@ -1,6 +1,6 @@
 name: WorldSchematics
 main: dkramer.WorldFeatures
-version: 3.03
+version: 1.0
 author: WorldSchematics
 load: startup
 description: Generates .schematics into generated chunks.
