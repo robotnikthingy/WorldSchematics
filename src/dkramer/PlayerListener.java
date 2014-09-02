@@ -9,10 +9,20 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerListener implements Listener {
+	
+    public static WorldFeatures plugin;
+    
+    public PlayerListener(WorldFeatures main) {
+    	ChunkListener.plugin = main;
+    }
+	
+    public PlayerListener() {
+    }
+    
 	@EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player p = event.getPlayer();
-        if(!p.getItemInHand().getType().toString().equals(WorldFeatures.getSettingsConfig().getString("wandmaterial", WorldFeatures.defaultCuboidPicker))) {
+        if(!p.getItemInHand().getType().toString().equals(plugin.getConfig().getString("wandmaterial"))) {
             return;
         }
         if(!p.hasPermission("WorldSchematics.commands") && !p.isOp()) {

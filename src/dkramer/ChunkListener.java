@@ -34,7 +34,12 @@ public class ChunkListener implements Listener {
     private int bredth;
     private int height;
     private int rotation;
+    public static WorldFeatures plugin;
     CuboidClipboard cc;
+
+    public ChunkListener(WorldFeatures main) {
+    	ChunkListener.plugin = main;
+    }
 
     public ChunkListener() {
         rand = new Random();
@@ -42,7 +47,6 @@ public class ChunkListener implements Listener {
         bredth = 0;
         height = 0;
     }
-
     private void loadArea(World world, Vector origin, int[] pasteNoneOfThese) {
         EditSession es = new EditSession(new BukkitWorld(world), 1000000);
         try  {
@@ -84,8 +88,7 @@ public class ChunkListener implements Listener {
         chunkX = chunk.getX() * 16;
         chunkZ = chunk.getZ() * 16;
         wrld = chunk.getWorld();
-        
-        if(rand.nextInt(100) + 1 > WorldFeatures.getSettingsConfig().getInt("chunkchance", 2)) {
+        if(rand.nextInt(100) + 1 > plugin.getConfig().getInt("chunkchance")) {
         	System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
             return;
         }

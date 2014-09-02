@@ -1,6 +1,7 @@
 package dkramer;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -26,18 +27,25 @@ public class WorldFeatures extends JavaPlugin {
     public static final Logger logger = Logger.getLogger("Minecraft");
     private static final HashMap<Player, PlayerInfo> playerInfos = new HashMap<Player, PlayerInfo>();
     private static final HashMap<String, BetterConfiguration> configs = new HashMap<String, BetterConfiguration>();
+
+    public ChunkListener c1;
+    public PlayerListener p1;
+    
     
     public static String defaultCuboidPicker = "SEEDS";
         
     public void onDisable() {
         logger.info("WorldSchematics Disabled");
-        saveAllConfigs();
     }
 
     public void onEnable() {
     	instance = this;
         new File("plugins/WorldSchematics/ToUse").mkdirs();
         new File("plugins/WorldSchematics/ToUse/world").mkdirs();
+        //Confusing stuff to pass this to that to this and back
+        c1 = new ChunkListener(this);
+        p1 = new PlayerListener(this);
+        
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -45,7 +53,7 @@ public class WorldFeatures extends JavaPlugin {
 				saveAllConfigs();
 			}
         }, 20 * 60 * 15, 20 * 60 * 15);
-        getSettingsConfig().save();
+        this.saveDefaultConfig();
     }
     
     private void saveAllConfigs() {
@@ -65,9 +73,6 @@ public class WorldFeatures extends JavaPlugin {
     	return configs.get(path);
     }
     
-    public static BetterConfiguration getSettingsConfig() {
-    	return getConfig("plugins/WorldSchematics/Settings");
-    }
     
     public static PlayerInfo getPlayerInfo(Player player) {
     	if(!playerInfos.containsKey(player)) {
@@ -91,7 +96,7 @@ public class WorldFeatures extends JavaPlugin {
     	String error = (new StringBuilder())
     			.append(ChatColor.YELLOW)
     			.append("You need a corner! To select it, wield ")
-    			.append(getSettingsConfig().getString("wandmaterial", defaultCuboidPicker).toLowerCase().replaceAll("_", " ")).toString();
+    			.append(this.getConfig().getString("wandmaterial").toLowerCase().replaceAll("_", " ")).toString();
     	error += left ? " and left click." : " and right click.";
     	return error;
     }
@@ -169,8 +174,8 @@ public class WorldFeatures extends JavaPlugin {
                     }
                     return true;
                 } else {
-                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/wf <name>:").append(ChatColor.WHITE).append(" Creates a schematic named <name> of the selected cuboid.").toString());
-                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/wf copy <name>:").append(ChatColor.WHITE).append(" Copies and pastes this schematic from your Created folder into your ToUse folder.").toString());
+                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/ws <name>:").append(ChatColor.WHITE).append(" Creates a schematic named <name> of the selected cuboid.").toString());
+                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/ws copy <name>:").append(ChatColor.WHITE).append(" Copies and pastes this schematic from your Created folder into your ToUse folder.").toString());
                     return true;
                 }
             } else {
