@@ -89,7 +89,10 @@ public class ChunkListener implements Listener {
         chunkZ = chunk.getZ() * 16;
         wrld = chunk.getWorld();
         if(rand.nextInt(100) + 1 > plugin.getConfig().getInt("chunkchance")) {
-//        	System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
+        	if (plugin.getConfig().getBoolean("debug") == true)
+        	{
+        		System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
+        	}        	
             return;
         }
         
@@ -97,7 +100,10 @@ public class ChunkListener implements Listener {
         ArrayList<String> schemeNames = new ArrayList<String>();
         String children[] = new File(worldPath).list();
         if(children != null) {
-//        	System.out.println("[WorldSchematics] Found schematics in folder: " + wrld.getName());
+        	if (plugin.getConfig().getBoolean("debug") == true)
+        	{
+        		System.out.println("[WorldSchematics] Found schematics in folder: " + wrld.getName());	
+        	}   	
             for(int ab = 0; ab < children.length; ab++) {
             	String fileType = children[ab].substring(children[ab].indexOf('.') + 1);
                 if(fileType.equals("schematic")) {
@@ -225,7 +231,10 @@ public class ChunkListener implements Listener {
             }
         }
         if(canSpawn) {
-        	System.out.println("[WorldSchematics] spawning schematic at chunk (x,z)" + chunkX + "," + chunkZ );
+        	if (plugin.getConfig().getBoolean("showspawnedlocation") == true)
+        	{
+        		System.out.println("[WorldSchematics] spawning schematic at chunk (x,z)" + chunkX + "," + chunkZ );	
+        	}
         	String[] stringNone = schemeConfig.getString("dontpaste", "0").replaceAll(" ", "").split(",");
         	int[] pasteNone = new int[stringNone.length];
         	int i = 0;
