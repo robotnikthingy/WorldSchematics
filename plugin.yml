@@ -1,17 +1,9 @@
 name: WorldSchematics
 main: dkramer.WorldFeatures
-version: 1.0
+version: 0.2
 author: WorldSchematics
 load: startup
-description: Generates .schematics into generated chunks.
-website: http://cantripsandcooldowns.wordpress.com
+description: Spawns .schematics into newly generated chunks.
+website: https://github.com/robotnikthingy/WorldSchematics
 commands:
-    ws:
-        description: Use this to display the other commands.
-        usage: /ws
-    WorldSchematics:
-        description: Use this to display the other commands.
-        usage: /WorldSchematics
 permissions:
-    WorldSchematics.commands:
-        description: Gives permission to use every command.

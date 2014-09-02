@@ -83,21 +83,21 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onChunkPopulate(ChunkPopulateEvent event) {
-    	System.out.println("[WorldSchematics] New chunk created");
+//    	System.out.println("[WorldSchematics] New chunk created");
     	chunk = event.getChunk();
         chunkX = chunk.getX() * 16;
         chunkZ = chunk.getZ() * 16;
         wrld = chunk.getWorld();
         if(rand.nextInt(100) + 1 > plugin.getConfig().getInt("chunkchance")) {
-        	System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
+//        	System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
             return;
         }
         
-        String worldPath = "plugins/WorldSchematics/ToUse/" + wrld.getName();
+        String worldPath = "plugins/WorldSchematics/Schematics/" + wrld.getName();
         ArrayList<String> schemeNames = new ArrayList<String>();
         String children[] = new File(worldPath).list();
         if(children != null) {
-        	System.out.println("[WorldSchematics] Found schematics in folder: " + wrld.getName());
+//        	System.out.println("[WorldSchematics] Found schematics in folder: " + wrld.getName());
             for(int ab = 0; ab < children.length; ab++) {
             	String fileType = children[ab].substring(children[ab].indexOf('.') + 1);
                 if(fileType.equals("schematic")) {

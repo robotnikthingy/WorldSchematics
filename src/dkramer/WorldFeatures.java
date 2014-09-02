@@ -40,8 +40,8 @@ public class WorldFeatures extends JavaPlugin {
 
     public void onEnable() {
     	instance = this;
-        new File("plugins/WorldSchematics/ToUse").mkdirs();
-        new File("plugins/WorldSchematics/ToUse/world").mkdirs();
+        new File("plugins/WorldSchematics/Schematics").mkdirs();
+        new File("plugins/WorldSchematics/Schematics/world").mkdirs();
         //Confusing stuff to pass this to that to this and back
         c1 = new ChunkListener(this);
         p1 = new PlayerListener(this);
@@ -101,89 +101,5 @@ public class WorldFeatures extends JavaPlugin {
     	return error;
     }
     
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String args[]) {
-        Player playa = (Player)sender;
-        if(cmd.getName().equalsIgnoreCase("wf") || cmd.getName().equalsIgnoreCase("WorldSchematics")) {
-            if(playa.hasPermission("WorldSchematics.commands") || playa.isOp()) {
-                if(args.length >= 1 && !args[0].equalsIgnoreCase("copy")) {
-                	String saveName = "";
-                	for(String s : args) {
-                		saveName += s + " ";
-                	}
-                	saveName = saveName.substring(0, saveName.length() - 1);
-                	Location point1 = getPlayerInfo(playa).point1;
-                	Location point2 = getPlayerInfo(playa).point2;
-                    if(point1 != null) {
-                        if(point2 != null) {
-                        	BetterConfiguration cusLoad = WorldFeatures.getConfig("plugins/WorldSchematics/Created/" + saveName);
-                            int loc1X = point1.getBlockX();
-                            int loc1Y = point1.getBlockY();
-                            int loc1Z = point1.getBlockZ();
-                            int loc2X = point2.getBlockX();
-                            int loc2Y = point2.getBlockY();
-                            int loc2Z = point2.getBlockZ();
-                            int minx = Math.min(loc1X, loc2X);
-                            int miny = Math.min(loc1Y, loc2Y);
-                            int minz = Math.min(loc1Z, loc2Z);
-                            int maxx = Math.max(loc1X, loc2X);
-                            int maxy = Math.max(loc1Y, loc2Y);
-                            int maxz = Math.max(loc1Z, loc2Z);
-                            cusLoad.set("place", "ground");
-                            cusLoad.set("maxspawns", 0);
-                            cusLoad.set("chance", 50);
-                            cusLoad.set("basementdepth", 0);
-                            cusLoad.set("anywhereminY", 1);
-                            cusLoad.set("anywheremaxY", 126);
-                            cusLoad.set("randomrotate", true);
-                            cusLoad.set("biome", "none");
-                            cusLoad.set("pasteschematicair", false);
-                            cusLoad.save();
-                            Vector min = new Vector(minx, miny, minz);
-                            Vector max = new Vector(maxx, maxy, maxz);
-                            File schFile = new File((new StringBuilder("plugins/WorldSchematics/Created/")).append(saveName).append(".schematic").toString());
-                            saveArea(playa.getWorld(), max.subtract(min).add(new Vector(1, 1, 1)), min, schFile);
-                            playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("You saved this in the Created folder as the file: ").append(saveName).toString());
-                            return true;
-                        } else {
-                            playa.sendMessage(getErrorMessage(false));
-                            return true;
-                        }
-                    } else {
-                        playa.sendMessage(getErrorMessage(true));
-                        return true;
-                    }
-                }
-                if(args.length >= 2 && args[0].equalsIgnoreCase("copy")) {
-                    try {
-                    	String name = "";
-                    	for(int i = 1; i < args.length; i++) {
-                    		String s = args[i];
-                    		name += s + " ";
-                    	}
-                    	name = name.substring(0, name.length() - 1);
-                    	String worldName = playa.getWorld().getName();
-                        new File("plugins/WorldSchematics/ToUse/" + worldName).mkdir();
-                        String fromName = "plugins/WorldSchematics/Created/" + name;
-                        String toName = "plugins/WorldSchematics/ToUse/" + worldName + "/"  + name;
-                        Files.copy(new File(fromName + ".yml"), new File(toName + ".yml"));
-                        Files.copy(new File(fromName + ".schematic"), new File(toName + ".schematic"));
-                        playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("Successfully copied ").append(name).append(".").toString());
-                    } catch(IOException e) {
-                        playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("Something went wrong!").toString());
-                        e.printStackTrace();
-                    }
-                    return true;
-                } else {
-                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/ws <name>:").append(ChatColor.WHITE).append(" Creates a schematic named <name> of the selected cuboid.").toString());
-                    playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("/ws copy <name>:").append(ChatColor.WHITE).append(" Copies and pastes this schematic from your Created folder into your ToUse folder.").toString());
-                    return true;
-                }
-            } else {
-                playa.sendMessage((new StringBuilder()).append(ChatColor.YELLOW).append("You do not have permission to do that.").toString());
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
+ 
 }
