@@ -36,8 +36,8 @@ public class WorldFeatures extends JavaPlugin {
 
     public void onEnable() {
     	instance = this;
-    	new File("plugins/WorldSchematics/Created").mkdirs();
         new File("plugins/WorldSchematics/ToUse").mkdirs();
+        new File("plugins/WorldSchematics/ToUse/world").mkdirs();
         getServer().getPluginManager().registerEvents(new ChunkListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {

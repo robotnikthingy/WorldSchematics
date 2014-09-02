@@ -28,5 +28,10 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Jeff/Downloads/worldedit-5.6.3.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://docs.sk89q.com/worldedit/apidocs/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

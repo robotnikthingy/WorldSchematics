@@ -46,7 +46,7 @@ public class ChunkListener implements Listener {
     private void loadArea(World world, Vector origin, int[] pasteNoneOfThese) {
         EditSession es = new EditSession(new BukkitWorld(world), 1000000);
         try  {
-            cc.paste(es, origin, true, pasteNoneOfThese);
+            cc.paste(es, origin, true);
         } catch(MaxChangedBlocksException e) {
             e.printStackTrace();
         }
@@ -79,12 +79,14 @@ public class ChunkListener implements Listener {
 
     @EventHandler
     public void onChunkPopulate(ChunkPopulateEvent event) {
+    	System.out.println("[WorldSchematics] New chunk created");
     	chunk = event.getChunk();
         chunkX = chunk.getX() * 16;
         chunkZ = chunk.getZ() * 16;
         wrld = chunk.getWorld();
         
         if(rand.nextInt(100) + 1 > WorldFeatures.getSettingsConfig().getInt("chunkchance", 2)) {
+        	System.out.println("[WorldSchematics] Not going to load schematics in newly created chunk");
             return;
         }
         
@@ -92,6 +94,7 @@ public class ChunkListener implements Listener {
         ArrayList<String> schemeNames = new ArrayList<String>();
         String children[] = new File(worldPath).list();
         if(children != null) {
+        	System.out.println("[WorldSchematics] Found schematics in folder: " + wrld.getName());
             for(int ab = 0; ab < children.length; ab++) {
             	String fileType = children[ab].substring(children[ab].indexOf('.') + 1);
                 if(fileType.equals("schematic")) {
@@ -100,7 +103,9 @@ public class ChunkListener implements Listener {
             }
         }
         
+        
         if(schemeNames.size() == 0) {
+        	System.out.println("[WorldSchematics] Did not find any schematics in folder: " + wrld.getName() + "!");
             return;
         }
         
@@ -162,9 +167,10 @@ public class ChunkListener implements Listener {
             }
         }
 
-        if(!schemeConfig.getString("biome", "none").equals("none") && !cornerBlocksBiome(Biome.valueOf(schemeConfig.getString("biome", "PLAINS")))) {
+/*        if(!schemeConfig.getString("biome", "none").equals("none")) {
+        	System.out.println("[WorldSchematics] Biome for schematic = none. Will not create" + wrld.getName() + "!");        	
             return;
-        }
+        }*/
         
         int maxHeight = wrld.getMaxHeight() - 1;
         
@@ -216,6 +222,7 @@ public class ChunkListener implements Listener {
             }
         }
         if(canSpawn) {
+        	System.out.println("[WorldSchematics] spawning schematic at chunk (x,z)" + chunkX + "," + chunkZ );
         	String[] stringNone = schemeConfig.getString("dontpaste", "0").replaceAll(" ", "").split(",");
         	int[] pasteNone = new int[stringNone.length];
         	int i = 0;
